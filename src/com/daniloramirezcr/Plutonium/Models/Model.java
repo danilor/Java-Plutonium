@@ -61,5 +61,32 @@ abstract public class Model {
             return String.valueOf( " " );
         }
     }
+    /**
+     * 
+     * @return 
+     */
+    public String getOrigin() {
+        return origin;
+    }
+
+    /**
+     * 
+     * @param origin 
+     */
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+    
+    /**
+     * This will set a single attribute element
+     * @param key
+     * @param v 
+     */
+    public void setAttribute( String key , Object v){
+        this.attributes.put(key, v);
+    }
+    
+    
+    
     
 }
