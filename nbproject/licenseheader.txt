@@ -1,0 +1,14 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright ${date?date?string("yyyy")} Danilo Ramírez Mattey 
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}Licensed under the Apache License, Version 2.0 (the "License");
+${licensePrefix}you may not use this file except in compliance with the License.
+${licensePrefix}Software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+${licensePrefix}
+${licensePrefix}All external libraries and coding that may be found here have their own license and restrictions.
+${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
