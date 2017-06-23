@@ -30,7 +30,7 @@ abstract public class Model {
     /**
      * This are going to be the dynamic "attributes" from each element of the "tables".
      */
-    protected Map< String , Object > attributes;
+    protected Map< String , Attribute > attributes;
 
     /**
      * Constructor
@@ -44,7 +44,7 @@ abstract public class Model {
         * We initialize the Map structure if it has not been initialized
         */
         if( this.attributes == null ){
-            this.attributes = new HashMap<String, Object>();
+            this.attributes = new HashMap<String, Attribute>();
         }
     }
     
@@ -56,9 +56,9 @@ abstract public class Model {
      */
     public Object read( String key ){
         if( this.attributes.containsKey( key ) ){
-            return this.attributes.get( key );
+            return this.attributes.get( key ).getValueAsString();
         }else{
-            return String.valueOf( " " );
+            return String.valueOf( "" );
         }
     }
     /**
@@ -83,9 +83,19 @@ abstract public class Model {
      * @param v 
      */
     public void setAttribute( String key , Object v){
-        this.attributes.put(key, v);
+        Attribute aux = new Attribute();
+        aux.setValue(v);
+        this.attributes.put(key, aux);
     }
     
+    /**
+     * Returns one single value in Attribute format
+     * @param key
+     * @return 
+     */
+    public Attribute getAttribute( String key){
+        return this.attributes.get(key);
+    }
     
     
     
