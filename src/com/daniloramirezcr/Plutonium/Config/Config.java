@@ -44,7 +44,6 @@ public class Config {
             Console.e(err.getLocalizedMessage());
         }
     }
-
     /**
      * Gets the attributes
      * @param attributes 

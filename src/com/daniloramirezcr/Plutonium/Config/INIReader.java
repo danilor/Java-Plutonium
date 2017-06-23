@@ -11,10 +11,8 @@
 package com.daniloramirezcr.Plutonium.Config;
 
 import com.daniloramirezcr.Plutonium.Util.Console;
-import java.io.BufferedReader;
+import com.daniloramirezcr.Plutonium.Util.FilePReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,25 +40,19 @@ public class INIReader {
      */
     public Map<String,String> read() throws Exception{
         this.f = new File( this.location );
-        if( !f.exists() || f.isDirectory() ){
-            throw new FileNotFoundException( "The file " + this.location + " does not exist or its invalid" );
-        }
         
-        try (BufferedReader br = new BufferedReader(new FileReader( this.getFile().getAbsolutePath() ))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-               /**
-                * The line was read
-                */
-               String[] parts = line.split("=");
-               if( parts.length == 2 ){
-                   /**
-                    * Its only valid if it has 2 sections
-                    */
-                   this.items.put( parts[0] , parts[1] );
-               }
-               
-            }
+        try{
+            
+             String[] lines = FilePReader.readLines(f);
+             for( int i = 0 ; i < lines.length ; i++ ){
+                 String[] parts = lines[ i ].split("=");
+                if( parts.length == 2 ){
+                    /**
+                     * Its only valid if it has 2 sections
+                     */
+                    this.items.put( parts[0] , parts[1] );
+                }
+             } 
         }catch( IOException er ){
             /**
              * I guess we won't do anything if we cannot read the line actually.
