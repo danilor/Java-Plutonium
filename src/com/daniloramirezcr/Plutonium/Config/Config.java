@@ -10,6 +10,7 @@
  */
 package com.daniloramirezcr.Plutonium.Config;
 
+
 import com.daniloramirezcr.Plutonium.Util.Console;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ public class Config {
     /**
      * Indicates the name of the configuration file
      */
+    
+     private static Config myObj;
     
         private INIReader reader;
     
@@ -82,4 +85,16 @@ public class Config {
             return String.valueOf("");
         }
     }   
+    
+    
+     /**
+     * Create a static method to get instance.
+     * @return Plutonium the Plutonium 
+     */
+    public static Config getInstance(){
+        if(myObj == null){
+            myObj = new Config();
+        }
+        return myObj;
+    }
 }

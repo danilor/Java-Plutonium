@@ -10,6 +10,10 @@
  */
 package com.daniloramirezcr.Plutonium.Models;
 
+import com.daniloramirezcr.Plutonium.Data.Origin;
+import com.daniloramirezcr.Plutonium.Data.Where;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +23,11 @@ import java.util.Map;
  * since these models will work with only one single connection.
  * Most the the places where I described "tables", "rows" or "attributes" are actually data related, but that does
  * not mean the are actually from a table.
+ * 
+ * Since it extends the Origin class, it will has all query methods
  * @author danilo.ramirez
  */
-abstract public class Model {
+abstract public class Model extends Origin{
     /**
      * The origin indicates the "table" where this model will take the information from
      */
@@ -32,13 +38,36 @@ abstract public class Model {
      */
     protected Map< String , Attribute > attributes;
 
+    public Model(){
+        
+    }
+ 
     /**
      * Constructor
      */
-    public Model() {
+    /*public Model( ) {
             this.initializeMap(); // Create the map object
+    }*/
+    
+     /**
+     * Constructor
+     * If there comes with an ID, then we have to search for this ID in the table
+     */
+    /*public Model( int id ) throws Exception {
+            this.initializeMap(); // Create the map object
+            this.fillWithResultSet( this.table(this.origin).where(new Where("id",id)).q() );
+    }*/
+    
+    public void find( int id ) throws Exception{
+        
+        this.table( this.origin );
+        
+        ///this.fillWithResultSet( this.table(this.origin).where(new Where("id",id)).q() );
     }
     
+    /**
+     * We are going to initialize the MAP
+     */
     private void initializeMap(){
         /**
         * We initialize the Map structure if it has not been initialized
@@ -48,6 +77,24 @@ abstract public class Model {
         }
     }
     
+    
+    private void fillWithResultSet( ResultSet rs ) throws Exception{
+        
+        ResultSetMetaData rsmd = rs.getMetaData();
+        
+        int totalColumns = rsmd.getColumnCount();
+        
+        while (rs.next()) {
+                /*System.out.println(rs.getInt("id") +  "\t" + 
+                                   rs.getString("name") + "\t" +
+                                   rs.getDouble("capacity"));
+                */
+                for( int i = 0 ; i < totalColumns ; i ++ ){
+                    this.addAttribute( String.valueOf( rsmd.getColumnName( i ) ) , String.valueOf( rs.getObject( rsmd.getColumnName( i ) ) )  );
+                }
+                
+        }
+    }
     /**
      * This will read one attribute.
      * If the attribute does not exist, we return only empty string.
@@ -65,7 +112,7 @@ abstract public class Model {
      * 
      * @return 
      */
-    public String getOrigin() {
+    public String getOrigin()  {
         return origin;
     }
 
@@ -82,7 +129,7 @@ abstract public class Model {
      * @param key
      * @param v 
      */
-    public void setAttribute( String key , Object v){
+    public void addAttribute( String key , Object v){
         Attribute aux = new Attribute();
         aux.setValue(v);
         this.attributes.put(key, aux);
@@ -96,7 +143,5 @@ abstract public class Model {
     public Attribute getAttribute( String key){
         return this.attributes.get(key);
     }
-    
-    
-    
+   
 }

@@ -54,6 +54,12 @@ public class FilePReader {
         return aux;
     }
     
+    /**
+     * Read a file line by line and returns an array of the lines that were read
+     * @param f
+     * @return
+     * @throws Exception 
+     */
     public static String[] readLines( File f ) throws Exception
     {
         
@@ -80,6 +86,37 @@ public class FilePReader {
             throw er; // I am not fully sure why I am doing this, but hey! In the future this can change
         }
          return ((List<String>)aux).toArray(new String[aux.size()]);
+    }
+    
+    
+    /**
+     * Tries to create a directory, if it is success (or of it exist) it will return true, if not, it will return false
+     * @param dir
+     * @return 
+     */
+    public static boolean createDir( String dir ){
+        File d = new File( dir );
+        /**
+         * If it already exist, return true
+         */
+        if( d.exists() && d.isDirectory() ){
+            return true;
+        }
+       
+        /**
+         * if it does not exist, OR it exists but its a file, lets create it
+         */
+        if( !d.exists() || ( d.exists() && !d.isDirectory() ) ){
+            try{
+                d.mkdir();
+                return true;
+            }catch(Error | SecurityException se){
+                Console.e("The directory could not be created: " + dir);
+                return false;
+            }  
+        }
+        
+        return true;
     }
     
 }
